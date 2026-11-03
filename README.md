@@ -60,6 +60,10 @@ code/
 
 ## 快速开始（含用例，可直接复制运行）
 
+> 优化率一列需要原版 yosys：`check.ps1` 会自动找 `..\yosys-baseline\yosys-baseline.exe`；
+> 不想依赖外部目录时，把原版复制成 `bin\yosys-orig.exe` 即可（没有原版时只打印 LC，其它检查不受影响）。
+
+
 > 录屏/演示时用的那一套命令单独整理在 `实验结果命令.md`，可直接照敲。
 
 包内 `case\` 已放好 9 个官方案例（`test1~4` + `pmux_case01~05`），下面命令在**包根目录**执行：
@@ -174,6 +178,6 @@ cd code\verify
 脚本用相对路径调用 `..\bin\yosys-opt.exe`，内部流程与官方一致：`read_verilog → prep → equiv_opt -assert -async2sync -map dffeas_sim.v synth_intel -run begin:map_cells`。
 `dffeas_sim.v` 是为 `dffeas` 写的最小行为模型（异步低电平清零 + 时钟使能 + 按 `power_up` 置初值），用官方 `cells_sim.v` 的模型会推出 latch，SAT 无法处理。
 
-**eqy 原生验证（官方口径 C54-3）**：verify/eqy/ 内含 eqy 配置生成器与全部日志，9 个用例全部通过——
+**eqy 原生验证（官方口径 9月24-28日答疑·赛题二第54问第3点）**：verify/eqy/ 内含 eqy 配置生成器与全部日志，9 个用例全部通过——
 8 个在 eqy 默认分区模式下 PASS；test3 因分区切断跨触发器不变式，按9月24-28日答疑·赛题二EQY第5问 用整设计 miter 证明通过。
 详见 verify/eqy/README.md 与 verify/eqy/results/SUMMARY.txt。

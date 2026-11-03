@@ -18,6 +18,8 @@ $LASTEXITCODE = 0
 
 if ($Baseline -eq "") {
     $cands = @(
+        (Join-Path $here 'bin\yosys-orig.exe'),
+        (Join-Path $here 'bin\yosys-baseline.exe'),
         (Join-Path $root 'yosys-baseline\yosys-baseline.exe'),
         (Join-Path $root '..\yosys-baseline\yosys-baseline.exe'),
         (Join-Path $here '..\yosys-baseline\yosys-baseline.exe')
