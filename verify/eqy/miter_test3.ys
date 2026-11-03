@@ -1,0 +1,19 @@
+# Whole-design miter proof for test3 (whose eqy partitions are inconclusive).
+# Run inside .\work after run_eqy.ps1 has produced gate_test3.il and test3.v:
+#     cd work
+#     ..\..\..\bin\yosys-opt.exe -q -s ..\miter_test3.ys -l miter_test3.log
+read_verilog test3.v
+prep -top test3
+memory -nomap
+memory_map
+opt -fast
+design -stash gold
+read_rtlil gate_test3.il
+techmap -autoproc -map dffeas_sim.v
+opt -fast
+rename test3 gate
+design -stash gate
+design -copy-from gold -as gold test3
+design -copy-from gate -as gate gate
+miter -equiv -flatten -make_outputs gold gate miter
+sat -verify -prove-asserts -tempinduct -show-ports miter

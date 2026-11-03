@@ -1,0 +1,5 @@
+_tmp/
+*.log
+*.stderr
+*.stdout
+verify/eqy/work/

@@ -1,0 +1,14 @@
+# 三个 PMUX pass 的源码统一放在仓库根目录的 pmux_work/ 下维护，
+# 这里直接引用该目录，避免 yosys-src/passes/pmux/ 与 pmux_work/ 两处副本不同步。
+yosys_pass(pmux_recognize
+        ${YOSYS_CMAKE_SOURCE_DIR}/../pmux_work/pmux_recognize.cc
+)
+yosys_pass(pmux_decompose
+        ${YOSYS_CMAKE_SOURCE_DIR}/../pmux_work/pmux_decompose.cc
+)
+yosys_pass(pmux_optimize
+        ${YOSYS_CMAKE_SOURCE_DIR}/../pmux_work/pmux_optimize.cc
+)
+yosys_pass(pmux_recode
+        ${YOSYS_CMAKE_SOURCE_DIR}/../pmux_work/pmux_recode.cc
+)

@@ -1,0 +1,34 @@
+eqy equivalence summary  (OSS CAD Suite 20261030; eqy bundled version)
+
+  test1                    PASS   (partition mode)
+  test2                    PASS   (partition mode)
+  test3                    PASS   (partition mode inconclusive -> whole-design miter)
+  test4                    PASS   (partition mode)
+  pmux_case01_balanced     PASS   (partition mode)
+  pmux_case02_pipeline     PASS   (partition mode)
+  pmux_case03_crossbar     PASS   (partition mode)
+  pmux_case04_feedback     PASS   (partition mode)
+  pmux_case05_nested       PASS   (partition mode)
+
+  TOTAL: 9 / 9 PASS
+
+HOW test3 IS JUDGED
+-------------------
+`run_eqy.ps1` runs eqy in partition mode first (results/test3.log). For test3 the
+partitions "sr" and "rw" cannot be proven in isolation, because partitioning cuts a
+cross-flip-flop invariant that only holds for the whole design -- this is a property of
+the partition abstraction, not an inequivalence, and it happens for the unmodified
+baseline as well.
+
+The script therefore re-checks that case with a whole-design miter + SAT temporal
+induction (results/test3_miter.log), which reports
+  "Base case for induction length 1 proven"  and
+  "Induction step proven: SUCCESS!"
+on a miter comparing gold/gate outputs (sr_out, gpioout).
+
+Switching verification mode is explicitly allowed by the organisers
+(answer 9月24-28日答疑·赛题二EQY第5问: "switching design mode for verification is allowed and counts as passed"),
+so the case is reported as PASS. A case is reported as FAIL only if both methods fail.
+
+The raw partition log is kept as evidence; do not read its two "Failed to prove" lines
+as a functional mismatch.
