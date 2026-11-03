@@ -60,7 +60,7 @@ code/
 
 ## 快速开始（含用例，可直接复制运行）
 
-> 优化率一列需要原版 yosys：`check.ps1` 会自动找 `..\yosys-baseline\yosys-baseline.exe`；
+> 优化率一列需要原版 yosys：`check.ps1` 会自动找 `.\bin\yosys-orig.exe`；
 > 不想依赖外部目录时，把原版复制成 `bin\yosys-orig.exe` 即可（没有原版时只打印 LC，其它检查不受影响）。
 
 
