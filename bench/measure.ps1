@@ -12,6 +12,19 @@ param(
 # ASCII-only on purpose: PowerShell 5.1 mis-parses UTF-8 without BOM.
 
 $ErrorActionPreference = 'Continue'
+
+# A missing baseline must not hang: fall back to a logic-cell-only table.
+if (-not (Test-Path $Baseline)) {
+    Write-Host ("[warn] baseline not found: " + $Baseline)
+    Write-Host "[warn] falling back to the logic-cell-only table"
+    & (Join-Path $PSScriptRoot 'run_cases.ps1') -Yosys $Optimized -Cases $Cases
+    exit $LASTEXITCODE
+}
+if (-not (Test-Path $Optimized)) {
+    Write-Host ("[error] optimized yosys not found: " + $Optimized)
+    exit 1
+}
+
 . (Join-Path $PSScriptRoot '_tmpfix.ps1')
 $tmp = Get-WorkTemp -Root (Split-Path -Parent $PSScriptRoot)
 $env:TEMP = $tmp
@@ -24,6 +37,7 @@ function Run-One {
     $errFile = $Log + ".stderr"
     $p = Start-Process -FilePath $Exe -ArgumentList @('-q','-s',$Ys,'-l',$Log) -PassThru -NoNewWindow `
         -RedirectStandardOutput ($Log + ".stdout") -RedirectStandardError $errFile
+    if (-not $p) { return 0 }
     $peak = 0
     while ($true) {
         if ($p.HasExited) { break }
